@@ -1,0 +1,22 @@
+# Backend
+backend/.env
+backend/venv/
+backend/__pycache__/
+backend/**/__pycache__/
+*.pyc
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+
+# Editor / OS
+.vscode/
+.DS_Store
+
+# Claude Code project settings (local only, not part of the app)
+.claude/
+
+# Python test cache
+.pytest_cache/
+tests/__pycache__/
