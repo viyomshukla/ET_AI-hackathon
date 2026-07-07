@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { analyzeMessage, analyzeImage } from "../api.js";
+import anime from "animejs";
 
 // Turns backend scam_type codes into friendly labels for display.
 const SCAM_TYPE_LABELS = {
@@ -20,6 +21,33 @@ export default function FraudShield() {
   const [history, setHistory] = useState([]); // list of {userText, imagePreviewUrl, result}
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    anime.timeline({ loop: false })
+      .add({
+        targets: '.header-word',
+        translateY: [50, 0],
+        opacity: [0, 1],
+        easing: "easeOutExpo",
+        duration: 1000,
+        delay: (el, i) => 200 + 100 * i
+      })
+      .add({
+        targets: '.hero-subtitle',
+        opacity: [0, 1],
+        translateY: [20, 0],
+        easing: "easeOutExpo",
+        duration: 800,
+      }, '-=700')
+      .add({
+        targets: '.chat-form',
+        opacity: [0, 1],
+        translateY: [30, 0],
+        scale: [0.98, 1],
+        easing: "easeOutElastic(1, .8)",
+        duration: 1200
+      }, '-=600');
+  }, []);
 
   function handleImageChange(e) {
     const file = e.target.files[0] || null;
@@ -56,14 +84,19 @@ export default function FraudShield() {
   }
 
   return (
-    <div>
-      <h1>Citizen Fraud Shield</h1>
-      <p className="subtitle">
+    <div style={{ overflow: "hidden" }}>
+      <span className="chapter-number">Chapter 01</span>
+      <h2 style={{ display: "flex", overflow: "hidden", fontSize: "2.75rem", fontWeight: "800", letterSpacing: "-0.03em", margin: "0 0 0.5rem 0" }}>
+        <span className="header-word" style={{ display: "inline-block", marginRight: "10px" }}>Citizen</span>
+        <span className="header-word" style={{ display: "inline-block", marginRight: "10px" }}>Fraud</span>
+        <span className="header-word" style={{ display: "inline-block" }}>Shield</span>
+      </h2>
+      <p className="section-subtitle hero-subtitle" style={{ opacity: 0 }}>
         Paste a suspicious message, SMS, or call description below, or upload
         a screenshot instead. Our AI will tell you if it looks like a scam.
       </p>
 
-      <form className="chat-form" onSubmit={handleSubmit}>
+      <form className="chat-form" onSubmit={handleSubmit} style={{ opacity: 0 }}>
         <div className="form-row">
           <textarea
             placeholder={
@@ -78,18 +111,49 @@ export default function FraudShield() {
 
         <div className="form-row">
           <div className="form-field">
-            <label htmlFor="image">Or upload a screenshot</label>
+            <label>Or upload a screenshot</label>
             <input
               id="image"
               type="file"
               accept="image/png, image/jpeg"
               onChange={handleImageChange}
+              style={{ display: "none" }}
             />
+            <label htmlFor="image" className="submit-btn" style={{ 
+              background: "rgba(255,255,255,0.05)", 
+              border: "1px solid var(--border)", 
+              color: "var(--text)", 
+              boxShadow: "none",
+              cursor: "pointer",
+              textAlign: "center",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "0.5rem"
+            }}>
+              📁 {image ? `Selected: ${image.name.slice(0, 15)}...` : "Choose Screenshot"}
+            </label>
           </div>
           {imagePreviewUrl && (
             <div className="form-field">
               <label>Preview</label>
-              <img src={imagePreviewUrl} alt="Screenshot preview" className="image-preview" />
+              <div className="image-preview-container">
+                <img src={imagePreviewUrl} alt="Screenshot preview" className="image-preview" />
+                {image && (
+                  <button type="button" className="close-btn" style={{
+                    background: "var(--error-bg)",
+                    color: "var(--error-text)",
+                    border: "none",
+                    borderRadius: "8px",
+                    padding: "0.5rem 0.75rem",
+                    cursor: "pointer",
+                    fontWeight: "600",
+                    fontSize: "0.85rem"
+                  }} onClick={() => { setImage(null); setImagePreviewUrl(null); }}>
+                    Remove
+                  </button>
+                )}
+              </div>
             </div>
           )}
         </div>
@@ -120,7 +184,7 @@ export default function FraudShield() {
         </div>
 
         <button className="submit-btn" type="submit" disabled={loading}>
-          {loading ? "Analyzing..." : image ? "Analyze Screenshot" : "Analyze Message"}
+          {loading ? "Analyzing..." : image ? "🛡️ Analyze Screenshot" : "🛡️ Analyze Message"}
         </button>
       </form>
 

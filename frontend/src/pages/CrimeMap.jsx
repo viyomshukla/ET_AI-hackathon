@@ -1,8 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { MapContainer, TileLayer, CircleMarker, Tooltip } from "react-leaflet";
 import { fetchHotspots } from "../api.js";
 import AnalyticsCharts from "../components/AnalyticsCharts.jsx";
 import Spinner from "../components/Spinner.jsx";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const SCAM_TYPE_OPTIONS = [
   { value: "all", label: "All scam types" },
@@ -15,10 +19,30 @@ const SCAM_TYPE_OPTIONS = [
 
 const INDIA_CENTER = [22.9734, 78.6569];
 
-// Turns a raw complaint count into a circle radius (pixels) that stays
-// readable whether a city has 2 complaints or 80.
 function radiusForCount(count) {
   return Math.min(8 + count * 1.5, 40);
+}
+
+// Rolling Counter Component
+function AnimatedCounter({ value }) {
+  const ref = useRef(null);
+  
+  useEffect(() => {
+    if (typeof value !== "number" || isNaN(value)) return;
+    const obj = { val: 0 };
+    gsap.to(obj, {
+      val: value,
+      duration: 1.2,
+      ease: "power2.out",
+      onUpdate: () => {
+        if (ref.current) {
+          ref.current.textContent = Math.floor(obj.val);
+        }
+      }
+    });
+  }, [value]);
+
+  return <span ref={ref}>0</span>;
 }
 
 export default function CrimeMap() {
@@ -26,6 +50,7 @@ export default function CrimeMap() {
   const [data, setData] = useState({ hotspots: [], total_complaints: 0, top_city: null, top_scam_type: null });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const analyticsRef = useRef(null);
 
   useEffect(() => {
     setLoading(true);
@@ -35,10 +60,36 @@ export default function CrimeMap() {
       .finally(() => setLoading(false));
   }, [scamType]);
 
+  // GSAP ScrollTrigger for revealing analytics
+  useEffect(() => {
+    if (loading || error) return;
+    
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".analytics-section",
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".analytics-section",
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
+    }, analyticsRef);
+
+    return () => ctx.revert();
+  }, [loading, error]);
+
   return (
     <div>
-      <h1>Geospatial Crime Dashboard</h1>
-      <p className="subtitle">
+      <span className="chapter-number">Chapter 03</span>
+      <h2>Geospatial Crime Dashboard</h2>
+      <p className="section-subtitle">
         Complaint hotspots across India. Circle size = number of complaints in
         that city.
       </p>
@@ -61,7 +112,9 @@ export default function CrimeMap() {
       <div className="stats-panel">
         <div className="stat-card">
           <div className="stat-label">Total complaints</div>
-          <div className="stat-value">{data.total_complaints}</div>
+          <div className="stat-value">
+            <AnimatedCounter value={data.total_complaints} />
+          </div>
         </div>
         <div className="stat-card">
           <div className="stat-label">Top scam type</div>
@@ -84,15 +137,15 @@ export default function CrimeMap() {
             style={{ height: "100%", width: "100%" }}
           >
             <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+              url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
             />
             {data.hotspots.map((h) => (
               <CircleMarker
                 key={h.city}
                 center={[h.lat, h.lng]}
                 radius={radiusForCount(h.count)}
-                pathOptions={{ color: "#dc2626", fillColor: "#dc2626", fillOpacity: 0.5 }}
+                pathOptions={{ color: "var(--danger)", fillColor: "var(--danger)", fillOpacity: 0.5, weight: 1 }}
               >
                 <Tooltip>
                   <strong>{h.city}</strong>
@@ -105,8 +158,12 @@ export default function CrimeMap() {
         </div>
       )}
 
-      <h2 className="section-heading">Analytics</h2>
-      <AnalyticsCharts />
+      {!loading && !error && (
+        <div ref={analyticsRef} className="analytics-section" style={{ opacity: 0 }}>
+          <h2 className="section-heading">Analytics</h2>
+          <AnalyticsCharts />
+        </div>
+      )}
     </div>
   );
 }

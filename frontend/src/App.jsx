@@ -1,8 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
-import FraudShield from "./pages/FraudShield.jsx";
-import NetworkGraph from "./pages/NetworkGraph.jsx";
-import CrimeMap from "./pages/CrimeMap.jsx";
+import Home from "./pages/Home.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
 
 export default function App() {
   return (
@@ -10,9 +9,8 @@ export default function App() {
       <Navbar />
       <main className="page-content">
         <Routes>
-          <Route path="/" element={<FraudShield />} />
-          <Route path="/graph" element={<NetworkGraph />} />
-          <Route path="/map" element={<CrimeMap />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </main>
     </div>
