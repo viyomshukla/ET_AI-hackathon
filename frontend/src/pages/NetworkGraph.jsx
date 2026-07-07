@@ -72,8 +72,9 @@ export default function NetworkGraph() {
 
   return (
     <div>
-      <h1>Fraud Network Graph</h1>
-      <p className="subtitle">
+      <span className="chapter-number">Chapter 02</span>
+      <h2>Fraud Network Graph</h2>
+      <p className="section-subtitle">
         Complaints that share the same phone number or bank account are
         connected here, revealing possible fraud rings. Bigger dots mean
         bigger rings.
