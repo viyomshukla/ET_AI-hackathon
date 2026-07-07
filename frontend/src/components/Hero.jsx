@@ -19,7 +19,7 @@ function Particle({ x, y, size, delay, duration }) {
   );
 }
 
-// Minimal iPhone CSS mockup with reflections, titanium bezels, and wiggling dynamic island
+// Minimal iPhone CSS mockup
 function IPhoneMockup({ opacity, scale, x, rotateY, isActive, mousePos }) {
   return (
     <div style={{
@@ -44,7 +44,6 @@ function IPhoneMockup({ opacity, scale, x, rotateY, isActive, mousePos }) {
       transition: "all 1.0s cubic-bezier(0.25, 1, 0.5, 1), transform 0.2s ease-out",
       animation: isActive ? "floating-device 6s ease-in-out infinite" : "none",
     }}>
-      {/* Titanium inner bezel accent */}
       <div style={{
         position: "absolute", inset: "3px",
         border: "1px solid rgba(255,255,255,0.04)",
@@ -53,7 +52,6 @@ function IPhoneMockup({ opacity, scale, x, rotateY, isActive, mousePos }) {
         zIndex: 6,
       }} />
 
-      {/* Screen glare/reflection sheen */}
       <div style={{
         position: "absolute", inset: 0,
         background: "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 60%)",
@@ -61,7 +59,6 @@ function IPhoneMockup({ opacity, scale, x, rotateY, isActive, mousePos }) {
         zIndex: 5,
       }} />
 
-      {/* Dynamic Island */}
       <div style={{
         width: isActive ? "105px" : "92px", 
         height: "29px",
@@ -73,7 +70,6 @@ function IPhoneMockup({ opacity, scale, x, rotateY, isActive, mousePos }) {
         transition: "width 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
       }} />
 
-      {/* Screen Content */}
       <div style={{
         flex: 1, width: "100%", padding: "14px 12px",
         display: "flex", flexDirection: "column", gap: "8px",
@@ -81,7 +77,6 @@ function IPhoneMockup({ opacity, scale, x, rotateY, isActive, mousePos }) {
         background: isActive ? "rgba(2, 8, 24, 0.96)" : "#020818",
         transition: "background 0.5s ease",
       }}>
-        {/* Status bar */}
         <div style={{ 
           display: "flex", 
           justifyContent: "space-between", 
@@ -98,7 +93,6 @@ function IPhoneMockup({ opacity, scale, x, rotateY, isActive, mousePos }) {
           </div>
         </div>
 
-        {/* App header */}
         <div style={{ 
           background: "rgba(255,255,255,0.05)", 
           borderRadius: "10px", 
@@ -112,7 +106,6 @@ function IPhoneMockup({ opacity, scale, x, rotateY, isActive, mousePos }) {
           <div style={{ fontSize: "11px", color: "white", fontFamily: "Instrument Serif, serif", marginTop: "2px" }}>Safety Platform</div>
         </div>
 
-        {/* Alert card */}
         <div style={{ 
           background: "rgba(239,68,68,0.12)", 
           border: "1px solid rgba(239,68,68,0.22)", 
@@ -132,7 +125,6 @@ function IPhoneMockup({ opacity, scale, x, rotateY, isActive, mousePos }) {
           </div>
         </div>
 
-        {/* Stats mini */}
         <div style={{ 
           display: "grid", 
           gridTemplateColumns: "1fr 1fr", 
@@ -149,7 +141,6 @@ function IPhoneMockup({ opacity, scale, x, rotateY, isActive, mousePos }) {
           ))}
         </div>
 
-        {/* Mini map placeholder */}
         <div style={{ 
           flex: 1, 
           background: "rgba(59,130,246,0.08)", 
@@ -169,7 +160,6 @@ function IPhoneMockup({ opacity, scale, x, rotateY, isActive, mousePos }) {
           <span style={{ fontSize: "7px", color: "rgba(255,255,255,0.35)", fontFamily: "Inter, sans-serif" }}>Crime Hotspot Map</span>
         </div>
 
-        {/* Scan button */}
         <div className="sweep-btn" style={{ 
           background: "rgba(255,255,255,0.06)", 
           borderRadius: "10px", 
@@ -186,7 +176,6 @@ function IPhoneMockup({ opacity, scale, x, rotateY, isActive, mousePos }) {
         </div>
       </div>
 
-      {/* Home indicator */}
       <div style={{
         width: "100px", height: "4px",
         background: "rgba(255,255,255,0.3)",
@@ -198,7 +187,112 @@ function IPhoneMockup({ opacity, scale, x, rotateY, isActive, mousePos }) {
   );
 }
 
-// MacBook CSS mockup with screen lid, reflection sheen, keyboard bezel, and trackpad details
+// Minimal Tablet (iPad) CSS mockup with split view dashboard
+function ITabletMockup({ opacity, scale, x, rotateY, isActive, mousePos }) {
+  return (
+    <div style={{
+      width: "310px",
+      height: "410px",
+      borderRadius: "32px",
+      background: "#090d16",
+      border: "3.5px solid #1e293b",
+      boxShadow: `
+        0 0 0 1px rgba(255,255,255,0.08),
+        0 35px 75px rgba(0,0,0,0.85),
+        inset 0 1px 2px rgba(255,255,255,0.15),
+        0 0 60px rgba(59,130,246,0.14)
+      `,
+      position: "absolute",
+      display: "flex",
+      flexDirection: "column",
+      overflow: "hidden",
+      transform: `scale(${scale}) translateX(${x + mousePos.x * 0.8}px) translateY(${mousePos.y * 0.8}px) rotateY(${rotateY + mousePos.x * 0.5}deg) rotateX(${-mousePos.y * 0.5}deg)`,
+      opacity: opacity,
+      transition: "all 1.0s cubic-bezier(0.25, 1, 0.5, 1), transform 0.2s ease-out",
+      animation: isActive ? "floating-device-offset 6s ease-in-out infinite" : "none",
+    }}>
+      <div style={{
+        position: "absolute", inset: 0,
+        background: "linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0) 60%)",
+        pointerEvents: "none",
+        zIndex: 5,
+      }} />
+
+      <div style={{
+        flex: 1, width: "100%", padding: "16px 14px",
+        display: "flex", flexDirection: "column", gap: "10px",
+        background: isActive ? "rgba(2, 8, 24, 0.96)" : "#020818",
+        transition: "background 0.5s ease",
+      }}>
+        {/* Tablet Top Header */}
+        <div style={{
+          display: "flex", justifyContent: "space-between", alignItems: "center",
+          borderBottom: "1px solid rgba(255,255,255,0.08)", paddingBottom: "8px",
+          opacity: isActive ? 1 : 0,
+          transition: "opacity 0.5s ease 0.2s"
+        }}>
+          <span style={{ fontSize: "11px", color: "white", fontFamily: "Instrument Serif, serif", letterSpacing: "0.02em" }}>🛡️ Cyber Shield Tablet</span>
+          <span style={{ fontSize: "7px", color: "rgba(255,255,255,0.4)", fontFamily: "Inter, sans-serif" }}>10:00 AM</span>
+        </div>
+
+        {/* Tablet Split Panel */}
+        <div style={{ 
+          flex: 1, 
+          display: "grid", 
+          gridTemplateColumns: "110px 1fr", 
+          gap: "8px",
+          opacity: isActive ? 1 : 0,
+          transform: isActive ? "translateY(0)" : "translateY(15px)",
+          transition: "all 0.7s ease 0.4s"
+        }}>
+          {/* Left panel feed */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+            <div style={{ fontSize: "6.5px", color: "rgba(255,255,255,0.3)", textTransform: "uppercase", letterSpacing: "0.05em", fontFamily: "Inter, sans-serif" }}>LOGS</div>
+            {["UPI Scam Blocked", "IP Blocked: Mumbai", "Screenshot Checked"].map((text, i) => (
+              <div key={i} style={{
+                background: "rgba(255,255,255,0.03)", borderRadius: "6px", padding: "6px",
+                border: "1px solid rgba(255,255,255,0.05)", fontSize: "7px", color: "rgba(255,255,255,0.6)",
+                fontFamily: "Inter, sans-serif"
+              }}>
+                {text}
+              </div>
+            ))}
+          </div>
+
+          {/* Right panel charts */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px" }}>
+              <div style={{ background: "rgba(34,197,94,0.08)", borderRadius: "6px", padding: "6px", border: "1px solid rgba(34,197,94,0.15)" }}>
+                <div style={{ fontSize: "12px", color: "#22c55e", fontWeight: "bold", fontFamily: "Instrument Serif, serif" }}>99.2%</div>
+                <div style={{ fontSize: "6px", color: "rgba(255,255,255,0.4)", fontFamily: "Inter, sans-serif" }}>Accuracy</div>
+              </div>
+              <div style={{ background: "rgba(59,130,246,0.08)", borderRadius: "6px", padding: "6px", border: "1px solid rgba(59,130,246,0.15)" }}>
+                <div style={{ fontSize: "12px", color: "#3b82f6", fontWeight: "bold", fontFamily: "Instrument Serif, serif" }}>4.2s</div>
+                <div style={{ fontSize: "6px", color: "rgba(255,255,255,0.4)", fontFamily: "Inter, sans-serif" }}>Response</div>
+              </div>
+            </div>
+
+            <div style={{
+              flex: 1, background: "rgba(255,255,255,0.02)", borderRadius: "6px", padding: "8px",
+              border: "1px solid rgba(255,255,255,0.06)", display: "flex", flexDirection: "column", justifyContent: "center", gap: "4px"
+            }}>
+              <span style={{ fontSize: "7px", color: "rgba(255,255,255,0.4)", fontFamily: "Inter, sans-serif" }}>THREAT LEVEL MONITOR</span>
+              <div style={{ width: "100%", height: "6px", background: "rgba(255,255,255,0.1)", borderRadius: "3px", overflow: "hidden" }}>
+                <div style={{ width: "70%", height: "100%", background: "linear-gradient(90deg, #3b82f6, #ef4444)" }} />
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", fontSize: "6px", color: "rgba(255,255,255,0.3)", fontFamily: "Inter, sans-serif" }}>
+                <span>Safe</span>
+                <span>Active Threat</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// MacBook CSS mockup
 function MacBookMockup({ opacity, scale, x, rotateY, isOpen, mousePos }) {
   const [typedUrl, setTypedUrl] = useState("");
 
@@ -229,7 +323,6 @@ function MacBookMockup({ opacity, scale, x, rotateY, isOpen, mousePos }) {
       perspective: "1200px",
       animation: isOpen ? "floating-device-offset 6s ease-in-out infinite" : "none",
     }}>
-      {/* Screen lid 3D wrapper */}
       <div style={{
         transformOrigin: "bottom center",
         transform: isOpen ? "rotateX(0deg)" : "rotateX(-95deg)",
@@ -250,21 +343,18 @@ function MacBookMockup({ opacity, scale, x, rotateY, isOpen, mousePos }) {
         position: "relative",
         zIndex: 2,
       }}>
-        {/* Screen glare sheen */}
         <div style={{
           position: "absolute", inset: 0,
           background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 50%)",
           pointerEvents: "none", zIndex: 5,
         }} />
 
-        {/* Camera dot */}
         <div style={{
           position: "absolute", top: "8px", left: "50%", transform: "translateX(-50%)",
           width: "6px", height: "6px", borderRadius: "50%",
           background: "rgba(255,255,255,0.2)",
         }} />
 
-        {/* Screen content */}
         <div style={{ 
           padding: "20px 18px", 
           paddingTop: "28px", 
@@ -276,7 +366,6 @@ function MacBookMockup({ opacity, scale, x, rotateY, isOpen, mousePos }) {
           transform: isOpen ? "translateY(0)" : "translateY(15px)",
           transition: "all 0.8s ease 0.6s"
         }}>
-          {/* Browser chrome */}
           <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: "8px", padding: "6px 10px", display: "flex", alignItems: "center", gap: "6px", border: "1px solid rgba(255,255,255,0.06)" }}>
             <div style={{ display: "flex", gap: "4px" }}>
               {["#ef4444","#f59e0b","#22c55e"].map(c => (
@@ -289,9 +378,7 @@ function MacBookMockup({ opacity, scale, x, rotateY, isOpen, mousePos }) {
             </div>
           </div>
 
-          {/* Dashboard layout */}
           <div style={{ flex: 1, display: "grid", gridTemplateColumns: "160px 1fr", gap: "8px" }}>
-            {/* Sidebar */}
             <div style={{ background: "rgba(255,255,255,0.03)", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.06)", padding: "10px 8px", display: "flex", flexDirection: "column", gap: "6px" }}>
               <div style={{ fontSize: "9px", color: "rgba(255,255,255,0.7)", fontFamily: "Instrument Serif, serif", marginBottom: "4px" }}>Cyber Shield</div>
               {["🛡️ Shield","🕸️ Network","🗺️ Map","📊 Analytics"].map((item, i) => (
@@ -301,9 +388,7 @@ function MacBookMockup({ opacity, scale, x, rotateY, isOpen, mousePos }) {
               ))}
             </div>
 
-            {/* Main area */}
             <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-              {/* Stats row */}
               <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "6px" }}>
                 {[{ label: "Threats Blocked", val: "12,841", color: "#22c55e" }, { label: "Active Alerts", val: "34", color: "#ef4444" }, { label: "Reports Today", val: "1,203", color: "#f59e0b" }].map(s => (
                   <div key={s.label} style={{ background: "rgba(255,255,255,0.04)", borderRadius: "7px", padding: "8px 10px", border: "1px solid rgba(255,255,255,0.06)" }}>
@@ -313,7 +398,6 @@ function MacBookMockup({ opacity, scale, x, rotateY, isOpen, mousePos }) {
                 ))}
               </div>
 
-              {/* Scan panel */}
               <div style={{ flex: 1, background: "rgba(255,255,255,0.03)", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.06)", padding: "12px", display: "flex", flexDirection: "column", gap: "8px" }}>
                 <div style={{ fontSize: "10px", color: "rgba(255,255,255,0.6)", fontFamily: "Instrument Serif, serif" }}>Citizen Fraud Shield</div>
                 <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: "6px", padding: "8px", border: "1px solid rgba(255,255,255,0.06)", fontSize: "8px", color: "rgba(255,255,255,0.2)", fontFamily: "Inter, sans-serif" }}>
@@ -328,7 +412,6 @@ function MacBookMockup({ opacity, scale, x, rotateY, isOpen, mousePos }) {
         </div>
       </div>
 
-      {/* Base/keyboard */}
       <div style={{
         width: "560px",
         height: "12px",
@@ -345,7 +428,6 @@ function MacBookMockup({ opacity, scale, x, rotateY, isOpen, mousePos }) {
         justifyContent: "space-between",
         padding: "1px 0",
       }}>
-        {/* Subtle Keyboard keys outline */}
         <div style={{
           width: "480px", height: "3px",
           background: "rgba(255,255,255,0.03)",
@@ -353,7 +435,6 @@ function MacBookMockup({ opacity, scale, x, rotateY, isOpen, mousePos }) {
           borderRadius: "1px",
           border: "1px solid rgba(255,255,255,0.05)"
         }} />
-        {/* Trackpad */}
         <div style={{
           width: "110px", height: "4px",
           background: "rgba(255,255,255,0.05)",
@@ -380,7 +461,7 @@ function MacBookMockup({ opacity, scale, x, rotateY, isOpen, mousePos }) {
 export default function Hero() {
   const navigate = useNavigate();
   const containerRef = useRef(null);
-  const [deviceState, setDeviceState] = useState("phone");
+  const [deviceState, setDeviceState] = useState("phone"); // "phone" | "tablet" | "laptop"
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [stats, setStats] = useState({ blocked: 0, accuracy: 0, response: 0 });
 
@@ -395,10 +476,14 @@ export default function Hero() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  // Loop between device mockups
+  // Loop between phone, tablet, and laptop states
   useEffect(() => {
     const interval = setInterval(() => {
-      setDeviceState(prev => (prev === "phone" ? "laptop" : "phone"));
+      setDeviceState(prev => {
+        if (prev === "phone") return "tablet";
+        if (prev === "tablet") return "laptop";
+        return "phone";
+      });
     }, 5500);
     return () => clearInterval(interval);
   }, []);
@@ -444,22 +529,32 @@ export default function Hero() {
   ];
 
   const isPhone  = deviceState === "phone";
+  const isTablet = deviceState === "tablet";
   const isLaptop = deviceState === "laptop";
 
   const phoneProps = {
     opacity: isPhone ? 1 : 0,
     scale:   isPhone ? 1 : 0.6,
-    x:       isPhone ? 0 : -100,
-    rotateY: isPhone ? 0 : -35,
+    x:       isPhone ? 0 : isTablet ? -100 : 100,
+    rotateY: isPhone ? 0 : isTablet ? -35 : 35,
     isActive: isPhone,
+    mousePos,
+  };
+
+  const tabletProps = {
+    opacity: isTablet ? 1 : 0,
+    scale:   isTablet ? 1 : 0.6,
+    x:       isTablet ? 0 : isLaptop ? -100 : 100,
+    rotateY: isTablet ? 0 : isLaptop ? -35 : 35,
+    isActive: isTablet,
     mousePos,
   };
 
   const laptopProps = {
     opacity: isLaptop ? 1 : 0,
     scale:   isLaptop ? 1 : 0.6,
-    x:       isLaptop ? 0 : 100,
-    rotateY: isLaptop ? 0 : 35,
+    x:       isLaptop ? 0 : isPhone ? 100 : -100,
+    rotateY: isLaptop ? 0 : isPhone ? 35 : -35,
     isOpen: isLaptop,
     mousePos,
   };
@@ -734,11 +829,14 @@ export default function Hero() {
             transition: "all 0.6s ease",
             whiteSpace: "nowrap",
           }}>
-            {isPhone ? "📱 Mobile View" : isLaptop ? "💻 Desktop View" : "↔ Transitioning..."}
+            {isPhone ? "📱 Mobile View" : isTablet ? "📟 Tablet View" : "💻 Desktop View"}
           </div>
 
           {/* iPhone mockup */}
           <IPhoneMockup {...phoneProps} />
+
+          {/* Tablet mockup */}
+          <ITabletMockup {...tabletProps} />
 
           {/* MacBook mockup */}
           <MacBookMockup {...laptopProps} />
