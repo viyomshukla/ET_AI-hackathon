@@ -91,12 +91,13 @@ export default function FraudShield() {
         <span className="header-word" style={{ display: "inline-block", marginRight: "10px" }}>Fraud</span>
         <span className="header-word" style={{ display: "inline-block" }}>Shield</span>
       </h2>
-      <p className="section-subtitle hero-subtitle" style={{ opacity: 0 }}>
+      <p className="section-subtitle hero-subtitle">
         Paste a suspicious message, SMS, or call description below, or upload
         a screenshot instead. Our AI will tell you if it looks like a scam.
       </p>
 
-      <form className="chat-form" onSubmit={handleSubmit} style={{ opacity: 0 }}>
+      <form className="chat-form" onSubmit={handleSubmit} style={{ position: "relative" }}>
+        {loading && <div className="laser-scanner" />}
         <div className="form-row">
           <textarea
             placeholder={
@@ -207,7 +208,7 @@ function ResultCard({ entry }) {
   const verdictClass = result.verdict.toLowerCase(); // "scam" | "suspicious" | "safe"
 
   return (
-    <div className={`result-card ${verdictClass}`}>
+    <div className={`result-card ${verdictClass} hover-lift`}>
       {imagePreviewUrl ? (
         <>
           <img src={imagePreviewUrl} alt="Analyzed screenshot" className="image-preview" />

@@ -110,17 +110,17 @@ export default function CrimeMap() {
       </div>
 
       <div className="stats-panel">
-        <div className="stat-card">
+        <div className="stat-card hover-lift">
           <div className="stat-label">Total complaints</div>
           <div className="stat-value">
             <AnimatedCounter value={data.total_complaints} />
           </div>
         </div>
-        <div className="stat-card">
+        <div className="stat-card hover-lift">
           <div className="stat-label">Top scam type</div>
           <div className="stat-value">{data.top_scam_type || "-"}</div>
         </div>
-        <div className="stat-card">
+        <div className="stat-card hover-lift">
           <div className="stat-label">Top city</div>
           <div className="stat-value">{data.top_city || "-"}</div>
         </div>
@@ -159,7 +159,7 @@ export default function CrimeMap() {
       )}
 
       {!loading && !error && (
-        <div ref={analyticsRef} className="analytics-section" style={{ opacity: 0 }}>
+        <div ref={analyticsRef} className="analytics-section">
           <h2 className="section-heading">Analytics</h2>
           <AnalyticsCharts />
         </div>

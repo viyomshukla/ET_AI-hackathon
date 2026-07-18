@@ -256,6 +256,15 @@ function CinematicScene({ scrollRatio }) {
 
 export default function Background3D() {
   const [scrollRatio, setScrollRatio] = useState(0);
+  const [isLight, setIsLight] = useState(() => document.documentElement.getAttribute("data-theme") === "light");
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setIsLight(document.documentElement.getAttribute("data-theme") === "light");
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => observer.disconnect();
+  }, []);
 
   // Read scroll ratio dynamically
   useEffect(() => {
@@ -278,7 +287,12 @@ export default function Background3D() {
     };
   }, []);
 
-  const currentBackground = useMemo(() => getInterpolatedColors(scrollRatio), [scrollRatio]);
+  const currentBackground = useMemo(() => {
+    if (isLight) {
+      return "radial-gradient(circle at 50% 50%, #f8fafc 0%, #e2e8f0 100%)";
+    }
+    return getInterpolatedColors(scrollRatio);
+  }, [scrollRatio, isLight]);
 
   return (
     <div style={{
@@ -290,10 +304,10 @@ export default function Background3D() {
       zIndex: -1,
       pointerEvents: "none",
       background: currentBackground,
-      transition: "background 0.1s ease" // minor smoothing
+      transition: "background 0.3s ease" // smoothing theme transition
     }}>
       <Canvas camera={{ position: [0, 0, 5], fov: 60 }}>
-        <ambientLight intensity={0.3} />
+        <ambientLight intensity={isLight ? 0.8 : 0.3} />
         <CinematicScene scrollRatio={scrollRatio} />
       </Canvas>
     </div>
