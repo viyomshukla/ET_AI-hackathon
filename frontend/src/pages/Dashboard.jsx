@@ -19,7 +19,7 @@ export default function Dashboard() {
       paddingTop: "6rem",
     }}>
       {/* Page Header */}
-      <div style={{
+      <div className="animate-fade-rise" style={{
         maxWidth: "80rem",
         margin: "0 auto",
         padding: "3rem 2rem 2rem",
@@ -34,7 +34,7 @@ export default function Dashboard() {
         }}>
           Intelligence Operations
         </span>
-        <h1 style={{
+        <h1 className="shimmer-text" style={{
           fontFamily: "var(--font-display)",
           fontSize: "clamp(2.5rem, 5vw, 4.5rem)",
           fontWeight: "400",
@@ -43,7 +43,7 @@ export default function Dashboard() {
           letterSpacing: "-0.04em",
           margin: "0.5rem 0 0.75rem 0",
         }}>
-          Cyber<em style={{ color: "hsl(var(--muted-foreground))", fontStyle: "normal" }}> Shield</em>
+          Cyber<em style={{ fontStyle: "normal", opacity: 0.85 }}> Shield</em>
         </h1>
         <p style={{
           color: "hsl(var(--muted-foreground))",
@@ -63,58 +63,65 @@ export default function Dashboard() {
         padding: "0 2rem",
         display: "flex",
         gap: "0.75rem",
-        borderBottom: "1px solid rgba(255,255,255,0.06)",
-        paddingBottom: "0",
+        borderBottom: "1px solid var(--card-border)",
+        paddingBottom: "0.5rem",
+        flexWrap: "wrap",
       }}>
-        {TABS.map(tab => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            style={{
-              background: "none",
-              border: "none",
-              borderBottom: activeTab === tab.id
-                ? "2px solid hsl(var(--foreground))"
-                : "2px solid transparent",
-              padding: "1rem 1.5rem",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              color: activeTab === tab.id
-                ? "hsl(var(--foreground))"
-                : "hsl(var(--muted-foreground))",
-              fontSize: "0.875rem",
-              fontFamily: "var(--font-body)",
-              fontWeight: activeTab === tab.id ? "500" : "400",
-              transition: "all 0.2s ease",
-              marginBottom: "-1px",
-              whiteSpace: "nowrap",
-            }}
-          >
-            <span>{tab.icon}</span>
-            <span>{tab.label}</span>
-          </button>
-        ))}
+        {TABS.map(tab => {
+          const isActive = activeTab === tab.id;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              style={{
+                background: isActive ? "var(--tag-bg)" : "transparent",
+                border: isActive ? "1px solid var(--card-border)" : "1px solid transparent",
+                borderRadius: "12px",
+                padding: "0.75rem 1.4rem",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.6rem",
+                color: isActive ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))",
+                fontSize: "0.9rem",
+                fontFamily: "var(--font-body)",
+                fontWeight: isActive ? "600" : "400",
+                transition: "all 0.25s cubic-bezier(0.16, 1, 0.3, 1)",
+                whiteSpace: "nowrap",
+                boxShadow: isActive ? "0 4px 15px rgba(0,0,0,0.15)" : "none",
+                transform: isActive ? "translateY(-1px)" : "none",
+              }}
+            >
+              <span style={{ fontSize: "1.1rem" }}>{tab.icon}</span>
+              <div style={{ display: "flex", flexDirection: "column", textAlign: "left" }}>
+                <span>{tab.label}</span>
+                <span style={{ fontSize: "0.7rem", color: "hsl(var(--muted-foreground))", fontWeight: "400" }}>{tab.desc}</span>
+              </div>
+            </button>
+          );
+        })}
       </div>
 
       {/* Content Panel */}
       <div style={{
         maxWidth: "80rem",
         margin: "0 auto",
-        padding: "2.5rem 2rem 4rem",
+        padding: "2rem 2rem 4rem",
       }}>
         {/* Glassmorphic content card */}
-        <div style={{
-          background: "rgba(255,255,255,0.03)",
-          border: "1px solid rgba(255,255,255,0.07)",
-          borderRadius: "20px",
-          padding: "2.5rem",
-          backdropFilter: "blur(20px)",
-          WebkitBackdropFilter: "blur(20px)",
-          boxShadow: "0 25px 60px rgba(0,0,0,0.4)",
-          animation: "fade-rise 0.4s ease-out both",
-        }}>
+        <div
+          key={activeTab}
+          style={{
+            background: "var(--card-bg)",
+            border: "1px solid var(--card-border)",
+            borderRadius: "20px",
+            padding: "2.5rem",
+            backdropFilter: "var(--glass-blur)",
+            WebkitBackdropFilter: "var(--glass-blur)",
+            boxShadow: "var(--card-shadow)",
+            animation: "fade-rise 0.35s cubic-bezier(0.16, 1, 0.3, 1) both",
+          }}
+        >
           {activeTab === "shield" && <FraudShield />}
           {activeTab === "graph"  && <NetworkGraph />}
           {activeTab === "map"    && <CrimeMap />}

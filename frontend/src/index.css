@@ -60,6 +60,12 @@
 
 /* Light Theme Variables */
 [data-theme="light"] {
+  --background: 210 40% 98%;
+  --foreground: 222 47% 11%;
+  --muted-foreground: 215 16% 47%;
+  --primary: 222 47% 11%;
+  --primary-foreground: 210 40% 98%;
+
   --bg: #f8fafc;
   --bg-gradient: radial-gradient(circle at 50% 50%, #f1f5f9 0%, #f8fafc 100%);
   --text: #0f172a;
@@ -67,17 +73,17 @@
   --muted: #475569;
   --muted-2: #64748b;
   
-  --navbar-bg: rgba(255, 255, 255, 0.7);
+  --navbar-bg: rgba(255, 255, 255, 0.85);
   --navbar-hover: rgba(0, 0, 0, 0.05);
   --navbar-text: #334155;
   
-  --card-bg: rgba(255, 255, 255, 0.65);
-  --card-border: rgba(0, 0, 0, 0.06);
-  --card-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.05);
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --card-border: rgba(0, 0, 0, 0.08);
+  --card-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.08);
   --card-glow: rgba(59, 130, 246, 0.02);
   
-  --border: #e2e8f0;
-  --border-light: rgba(0, 0, 0, 0.02);
+  --border: 0 0% 88%;
+  --border-light: rgba(0, 0, 0, 0.08);
   
   --accent: #2563eb;
   --accent-hover: #1d4ed8;
@@ -1068,8 +1074,73 @@ html.lenis body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 32px 24px 40px 24px;
 }
 
+/* ==========================================================================
+   Micro-Animations & Visual Storytelling Utilities
+   ========================================================================== */
+
+/* Laser Scan Line for AI Analysis */
+@keyframes laser-sweep {
+  0% { top: 0%; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.laser-scanner {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0%, #3b82f6 50%, transparent 100%);
+  box-shadow: 0 0 15px #3b82f6, 0 0 30px #3b82f6;
+  animation: laser-sweep 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Pulsing Badge & Rings */
+@keyframes ring-expand {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+.pulse-ring-indicator {
+  position: relative;
+}
+
+.pulse-ring-indicator::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  border: 1.5px solid #22c55e;
+  animation: ring-expand 2s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+  pointer-events: none;
+}
+
+/* Hover Lift Card Effect */
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -10px rgba(59, 130, 246, 0.18);
+  border-color: rgba(59, 130, 246, 0.35);
+}
+
+/* Shimmer Highlight Sweep */
+@keyframes shimmer-glow {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer-text {
+  background: linear-gradient(90deg, hsl(var(--foreground)) 0%, #3b82f6 50%, hsl(var(--foreground)) 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer-glow 4s linear infinite;
+}

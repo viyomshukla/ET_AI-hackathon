@@ -35,7 +35,9 @@ function IPhoneMockup({ opacity, scale, x, rotateY, isActive, mousePos }) {
         0 0 50px rgba(59,130,246,0.12)
       `,
       position: "absolute",
-      display: "flex",
+      display: isActive ? "flex" : "none",
+      visibility: isActive ? "visible" : "hidden",
+      pointerEvents: isActive ? "auto" : "none",
       flexDirection: "column",
       alignItems: "center",
       overflow: "hidden",
@@ -203,7 +205,9 @@ function ITabletMockup({ opacity, scale, x, rotateY, isActive, mousePos }) {
         0 0 60px rgba(59,130,246,0.14)
       `,
       position: "absolute",
-      display: "flex",
+      display: isActive ? "flex" : "none",
+      visibility: isActive ? "visible" : "hidden",
+      pointerEvents: isActive ? "auto" : "none",
       flexDirection: "column",
       overflow: "hidden",
       transform: `scale(${scale}) translateX(${x + mousePos.x * 0.8}px) translateY(${mousePos.y * 0.8}px) rotateY(${rotateY + mousePos.x * 0.5}deg) rotateX(${-mousePos.y * 0.5}deg)`,
@@ -316,6 +320,9 @@ function MacBookMockup({ opacity, scale, x, rotateY, isOpen, mousePos }) {
   return (
     <div style={{
       position: "absolute",
+      display: isOpen ? "block" : "none",
+      visibility: isOpen ? "visible" : "hidden",
+      pointerEvents: isOpen ? "auto" : "none",
       transform: `scale(${scale}) translateX(${x + mousePos.x * 0.8}px) translateY(${mousePos.y * 0.8}px) rotateY(${rotateY + mousePos.x * 0.6}deg) rotateX(${-mousePos.y * 0.6}deg)`,
       opacity: opacity,
       transition: "all 1.0s cubic-bezier(0.25, 1, 0.5, 1), transform 0.2s ease-out",
@@ -492,11 +499,15 @@ export default function Hero() {
   useEffect(() => {
     if (!containerRef.current) return;
     const ctx = gsap.context(() => {
-      gsap.fromTo(".hero-h1-line", { opacity: 0, y: 50, rotateX: -15 }, { opacity: 1, y: 0, rotateX: 0, duration: 1, ease: "power3.out", stagger: 0.12, delay: 0.5 });
-      gsap.fromTo(".hero-sub", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 1.1 });
-      gsap.fromTo(".hero-ctas", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 1.4 });
-      gsap.fromTo(".hero-stats", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 1.7 });
-      gsap.fromTo(".device-showcase", { opacity: 0, scale: 0.85, x: 60 }, { opacity: 1, scale: 1, x: 0, duration: 1.2, ease: "power3.out", delay: 0.6 });
+      gsap.fromTo(".hero-eyebrow", { opacity: 0, y: 25, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "back.out(1.7)", delay: 0.2 });
+      gsap.fromTo(".hero-char", 
+        { opacity: 0, y: 55, rotateX: -90, scale: 0.5 }, 
+        { opacity: 1, y: 0, rotateX: 0, scale: 1, duration: 0.75, ease: "back.out(1.6)", stagger: 0.03, delay: 0.35 }
+      );
+      gsap.fromTo(".hero-sub", { opacity: 0, y: 25 }, { opacity: 1, y: 0, duration: 0.9, ease: "power3.out", delay: 1.2 });
+      gsap.fromTo(".hero-ctas", { opacity: 0, y: 25, scale: 0.95 }, { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: "back.out(1.4)", delay: 1.4 });
+      gsap.fromTo(".hero-stats", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.9, ease: "power3.out", delay: 1.7 });
+      gsap.fromTo(".device-showcase", { opacity: 0, scale: 0.82, rotateY: 15, x: 80 }, { opacity: 1, scale: 1, rotateY: 0, x: 0, duration: 1.4, ease: "power3.out", delay: 0.6 });
 
       const obj = { blocked: 0, accuracy: 0, response: 10 };
       gsap.to(obj, {
@@ -618,6 +629,37 @@ export default function Hero() {
           0% { transform: translate(0px, 0px) scale(1); }
           100% { transform: translate(-30px, -40px) scale(1.05); }
         }
+        .hero-char {
+          background: linear-gradient(180deg, #ffffff 40%, rgba(255,255,255,0.6) 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          transition: transform 0.25s ease, filter 0.25s ease;
+        }
+        [data-theme="light"] .hero-char {
+          background: linear-gradient(180deg, #0f172a 40%, #334155 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+        .hero-char:hover {
+          filter: drop-shadow(0 0 12px rgba(59,130,246,0.9));
+          transform: translateY(-6px) scale(1.2) rotate(-3deg) !important;
+        }
+        @media (max-width: 1024px) {
+          .hero-main-grid {
+            grid-template-columns: 1fr !important;
+            gap: 3rem !important;
+            padding-top: 4rem !important;
+          }
+          .device-showcase {
+            height: 440px !important;
+          }
+        }
+        @media (max-width: 640px) {
+          .device-showcase {
+            height: 360px !important;
+            transform: scale(0.7) !important;
+          }
+        }
       `}</style>
 
       {/* Floating high-end mesh gradient background orbs */}
@@ -664,7 +706,7 @@ export default function Hero() {
       {particles.map((p, i) => <Particle key={i} {...p} />)}
 
       {/* Main content */}
-      <div style={{
+      <div className="hero-main-grid" style={{
         maxWidth: "88rem",
         margin: "0 auto",
         padding: "0 2.5rem",
@@ -698,23 +740,38 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Heading with metallic text gradient */}
+          {/* Heading with 3D character flip animation */}
           <div style={{ perspective: "800px", marginBottom: "1.75rem" }}>
             <h1 style={{ margin: 0, padding: 0 }}>
-              {["Where safety", "rises through", "the silence."].map((line, i) => (
-                <div key={i} className="hero-h1-line" style={{
-                  opacity: 0,
-                  display: "block",
-                  fontFamily: "'Instrument Serif', serif",
-                  fontSize: "clamp(2.8rem, 5.5vw, 5.5rem)",
-                  lineHeight: "0.95",
-                  letterSpacing: "-0.035em",
-                  fontWeight: "400",
-                  background: "linear-gradient(180deg, #ffffff 40%, rgba(255,255,255,0.55) 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}>
-                  {line}
+              {["Where safety", "rises through", "the silence."].map((line, lineIdx) => (
+                <div key={lineIdx} className="hero-h1-line" style={{ display: "block", overflow: "hidden" }}>
+                  {line.split(" ").map((word, wordIdx) => (
+                    <span
+                      key={wordIdx}
+                      className="hero-word"
+                      style={{ display: "inline-block", marginRight: "0.3em", whiteSpace: "nowrap" }}
+                    >
+                      {word.split("").map((char, charIdx) => (
+                        <span
+                          key={charIdx}
+                          className="hero-char"
+                          style={{
+                            display: "inline-block",
+                            fontFamily: "'Instrument Serif', serif",
+                            fontSize: "clamp(2.8rem, 5.5vw, 5.5rem)",
+                            lineHeight: "0.95",
+                            letterSpacing: "-0.035em",
+                            fontWeight: "400",
+                            opacity: 0,
+                            transformStyle: "preserve-3d",
+                            cursor: "default",
+                          }}
+                        >
+                          {char}
+                        </span>
+                      ))}
+                    </span>
+                  ))}
                 </div>
               ))}
             </h1>
@@ -757,14 +814,14 @@ export default function Hero() {
             <button
               onClick={() => navigate("/dashboard")}
               style={{
-                background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)",
+                background: "var(--tag-bg)", border: "1px solid var(--card-border)",
                 borderRadius: "9999px", padding: "0.85rem 2rem",
                 fontSize: "0.95rem", fontFamily: "var(--font-body)",
                 color: "hsl(var(--muted-foreground))", cursor: "pointer",
                 transition: "all 0.2s ease",
               }}
-              onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; e.currentTarget.style.color = "hsl(var(--foreground))"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.04)"; e.currentTarget.style.color = "hsl(var(--muted-foreground))"; }}
+              onMouseEnter={e => { e.currentTarget.style.background = "var(--navbar-hover)"; e.currentTarget.style.color = "hsl(var(--foreground))"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "var(--tag-bg)"; e.currentTarget.style.color = "hsl(var(--muted-foreground))"; }}
             >
               View Dashboard
             </button>
@@ -813,23 +870,44 @@ export default function Hero() {
             pointerEvents: "none",
           }} />
 
-          {/* Device label pill */}
+          {/* Interactive Device Selector Tabs */}
           <div style={{
             position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)",
-            padding: "0.3rem 1rem",
+            padding: "0.25rem",
             borderRadius: "9999px",
-            background: "rgba(255,255,255,0.04)",
-            border: "1px solid rgba(255,255,255,0.08)",
-            fontSize: "0.7rem",
-            color: "hsl(var(--muted-foreground))",
-            fontFamily: "var(--font-body)",
-            letterSpacing: "0.1em",
-            textTransform: "uppercase",
-            zIndex: 20,
-            transition: "all 0.6s ease",
-            whiteSpace: "nowrap",
+            background: "var(--tag-bg)",
+            border: "1px solid var(--card-border)",
+            display: "flex",
+            gap: "0.25rem",
+            zIndex: 30,
+            backdropFilter: "blur(10px)",
+            boxShadow: "0 10px 25px rgba(0,0,0,0.3)",
           }}>
-            {isPhone ? "📱 Mobile View" : isTablet ? "📟 Tablet View" : "💻 Desktop View"}
+            {[
+              { id: "phone", label: "📱 Mobile" },
+              { id: "tablet", label: "📟 Tablet" },
+              { id: "laptop", label: "💻 Desktop" },
+            ].map(dev => (
+              <button
+                key={dev.id}
+                onClick={() => setDeviceState(dev.id)}
+                style={{
+                  background: deviceState === dev.id ? "var(--navbar-hover)" : "transparent",
+                  border: deviceState === dev.id ? "1px solid var(--card-border)" : "1px solid transparent",
+                  borderRadius: "9999px",
+                  padding: "0.3rem 0.85rem",
+                  fontSize: "0.72rem",
+                  color: deviceState === dev.id ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))",
+                  fontFamily: "var(--font-body)",
+                  fontWeight: deviceState === dev.id ? "600" : "400",
+                  cursor: "pointer",
+                  transition: "all 0.25s ease",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {dev.label}
+              </button>
+            ))}
           </div>
 
           {/* iPhone mockup */}

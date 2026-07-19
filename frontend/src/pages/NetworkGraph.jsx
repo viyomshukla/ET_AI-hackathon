@@ -119,7 +119,11 @@ export default function NetworkGraph() {
               nodeColor={getNodeColor}
               nodeVal={(node) => (node.type === "complaint" ? Math.min(node.ring_size || 1, 8) : 1)}
               nodeRelSize={5}
-              linkColor={() => "rgba(0,0,0,0.2)"}
+              linkColor={() => "rgba(59, 130, 246, 0.25)"}
+              linkDirectionalParticles={2}
+              linkDirectionalParticleSpeed={0.006}
+              linkDirectionalParticleWidth={2.5}
+              linkDirectionalParticleColor={() => "#3b82f6"}
               onNodeClick={(node) => setSelectedNode(node)}
             />
 
